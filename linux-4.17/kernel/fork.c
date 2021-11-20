@@ -2088,9 +2088,17 @@ long _do_fork(unsigned long clone_flags,
 	p = copy_process(clone_flags, stack_start, stack_size,
 			 child_tidptr, NULL, trace, tls, NUMA_NO_NODE);
 	add_latent_entropy();
-
+    
 	if (IS_ERR(p))
 		return PTR_ERR(p);
+
+    if (clone_flags & CLONE_KGUARD) {
+        p->kguard_stack = kmalloc(4096, GFP_KERNEL);
+        p->kguard_stack_sz = (p->kguard_stack) ? 4096 : 0;
+    } else {
+        p->kguard_stack = NULL;
+    }
+
 
 	/*
 	 * Do this prior waking up the new thread - the thread pointer

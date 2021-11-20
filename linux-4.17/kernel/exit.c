@@ -765,6 +765,9 @@ void __noreturn do_exit(long code)
 	struct task_struct *tsk = current;
 	int group_dead;
 
+    if (tsk->kguard_stack) {
+        kfree(tsk->kguard_stack + 4096 - tsk->kguard_stack_sz);
+    }
 	profile_task_exit(tsk);
 	kcov_task_exit(tsk);
 

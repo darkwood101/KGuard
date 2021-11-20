@@ -1095,6 +1095,9 @@ asmlinkage long sys_mmap_pgoff(unsigned long addr, unsigned long len,
 			unsigned long fd, unsigned long pgoff);
 asmlinkage long sys_old_mmap(struct mmap_arg_struct __user *arg);
 
+/* kguard/ */
+asmlinkage long sys_kguard_entry(unsigned long addr);
+asmlinkage long sys_kguard_exit(unsigned long addr);
 
 /*
  * Not a real system call, but a placeholder for syscalls which are
@@ -1267,7 +1270,5 @@ static inline long ksys_truncate(const char __user *pathname, loff_t length)
 {
 	return do_sys_truncate(pathname, length);
 }
-
-asmlinkage long sys_kguard(void);
 
 #endif
