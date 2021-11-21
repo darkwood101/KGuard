@@ -767,6 +767,8 @@ void __noreturn do_exit(long code)
 
     if (tsk->kguard_stack) {
         kfree(tsk->kguard_stack + 4096 - tsk->kguard_stack_sz);
+        printk("KGuard OK: Freed a stack at address %p\n",
+                tsk->kguard_stack + 4096 - tsk->kguard_stack_sz);
     }
 	profile_task_exit(tsk);
 	kcov_task_exit(tsk);
