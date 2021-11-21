@@ -23,7 +23,7 @@ SYSCALL_DEFINE1(kguard_entry, unsigned long, addr)
         goto error;
     }
 
-    printk("KGuard OK: Entry: Stored address %lx\n", addr);
+    printk("KGuard OK: Entry: Stored address 0x%px\n", (void*) addr);
     *((unsigned long*) t->kguard_stack) = addr;
     t->kguard_stack += sizeof(unsigned long);
     t->kguard_stack_sz -= sizeof(unsigned long); 
@@ -58,11 +58,11 @@ SYSCALL_DEFINE1(kguard_exit, unsigned long, addr)
     stored_addr = *((unsigned long*) t->kguard_stack);
     if (stored_addr != addr) {
         printk("KGuard ERROR: Return: Address mismatch: "
-               "KGuard remembers %lx, user popped %lx\n",
-               stored_addr, addr);
+               "KGuard remembers 0x%px, user popped 0x%px\n",
+               (void*) stored_addr, (void*)  addr);
         goto error;
     }
-    printk("KGuard OK: Return: Popped address %lx\n", addr);
+    printk("KGuard OK: Return: Popped address 0x%px\n", (void*) addr);
 
     return 0;
 
