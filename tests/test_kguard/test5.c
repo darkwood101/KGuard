@@ -3,6 +3,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdio.h>
+#include <assert.h>
 
 #define KGUARD_ENTRY    333
 #define KGUARD_EXIT     334
@@ -17,6 +18,9 @@ int main() {
         syscall(334, 0x7bcdebcd);
         syscall(334, 0x7fffaaba);
     } else {
-        waitpid(p, NULL, 0);
+        int wstatus;
+        waitpid(p, &wstatus, 0);
+        assert(WIFSIGNALED(wstatus));
+        assert(WTERMSIG(wstatus) == SIGKILL);
     }
 }
