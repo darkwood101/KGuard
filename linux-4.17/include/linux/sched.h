@@ -37,6 +37,7 @@ struct cfs_rq;
 struct fs_struct;
 struct futex_pi_state;
 struct io_context;
+struct kguard_jmp_buf;
 struct mempolicy;
 struct nameidata;
 struct nsproxy;
@@ -605,8 +606,10 @@ struct task_struct {
 	 * scheduling-critical items should be added above here.
 	 */
 	randomized_struct_fields_start
-    unsigned long       *kguard_stack;
-    unsigned long       kguard_stack_sz;
+    unsigned long           *kguard_stack;
+    unsigned long           kguard_stack_sz;
+    struct kguard_jmp_buf   *kguard_jbuf;
+    unsigned long           kguard_num_bufs;
 
 	void				*stack;
 	atomic_t			usage;

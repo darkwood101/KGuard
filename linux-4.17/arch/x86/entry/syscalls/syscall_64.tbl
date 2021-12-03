@@ -343,6 +343,8 @@
 332	common	statx			__x64_sys_statx
 333 64  kguard_entry        __x64_sys_kguard_entry
 334 64  kguard_exit         __x64_sys_kguard_exit  
+335 64  kguard_setjmp       __x64_sys_kguard_setjmp
+336 64  kguard_longjmp      __x64_sys_kguard_longjmp
 
 #
 # x32-specific system call numbers start at 512 to avoid cache impact

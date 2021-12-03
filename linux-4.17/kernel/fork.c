@@ -91,6 +91,7 @@
 #include <linux/kcov.h>
 #include <linux/livepatch.h>
 #include <linux/thread_info.h>
+#include <kguard.h>
 
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
@@ -2094,14 +2095,22 @@ long _do_fork(unsigned long clone_flags,
 
     if ((clone_flags & CLONE_KGUARD) || current->kguard_stack) {
         p->kguard_stack = kmalloc(1024 * sizeof(*p->kguard_stack), GFP_KERNEL);
-        if (p->kguard_stack) {
-            printk("KGuard OK: Allocated a stack at address %p\n", p->kguard_stack);
+        p->kguard_jbuf = kmalloc(16 * sizeof(*p->kguard_jbuf), GFP_KERNEL);
+        if (p->kguard_stack && p->kguard_jbuf) {
+            printk("KGuard OK: Allocated a stack at address %p\n",
+                    p->kguard_stack);
+            printk("KGuard OK: Allocated setjmp/longjmp buffers at address %p\n",
+                    p->kguard_jbuf);
             p->kguard_stack_sz = 0;
+            p->kguard_num_bufs = 0;
         } else {
-            printk("KGuard ERROR: Failed to allocate a stack\n");
+            printk("KGuard ERROR: Failed to allocate metadata\n");
+            kfree(p->kguard_stack);
+            kfree(p->kguard_jbuf);
         }
     } else {
         p->kguard_stack = NULL;
+        p->kguard_jbuf = NULL;
     }
 
 

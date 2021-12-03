@@ -58,6 +58,8 @@ struct task_struct init_task
 	.state		= 0,
     .kguard_stack = NULL,
     .kguard_stack_sz = 0,
+    .kguard_jbuf = NULL,
+    .kguard_num_bufs = 0,
 	.stack		= init_stack,
 	.usage		= ATOMIC_INIT(2),
 	.flags		= PF_KTHREAD,
