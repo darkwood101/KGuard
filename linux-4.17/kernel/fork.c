@@ -2093,13 +2093,12 @@ long _do_fork(unsigned long clone_flags,
 		return PTR_ERR(p);
 
     if ((clone_flags & CLONE_KGUARD) || current->kguard_stack) {
-        p->kguard_stack = kmalloc(4096, GFP_KERNEL);
+        p->kguard_stack = kmalloc(1024 * sizeof(*p->kguard_stack), GFP_KERNEL);
         if (p->kguard_stack) {
             printk("KGuard OK: Allocated a stack at address %p\n", p->kguard_stack);
-            p->kguard_stack_sz = 4096;
+            p->kguard_stack_sz = 0;
         } else {
             printk("KGuard ERROR: Failed to allocate a stack\n");
-            p->kguard_stack_sz = 0;
         }
     } else {
         p->kguard_stack = NULL;

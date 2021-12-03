@@ -14,19 +14,13 @@ SYSCALL_DEFINE1(kguard_entry, unsigned long, addr)
         printk("KGuard ERROR: Entry: Null stack\n");
         goto error;
     }
-    if (t->kguard_stack_sz % sizeof(unsigned long) != 0) {
-        printk("KGuard ERROR: Entry: Misaligned stack\n");
-        goto error;
-    }
-    if (t->kguard_stack_sz == 0) {
+    if (t->kguard_stack_sz == 1024) {
         printk("KGuard ERROR: Entry: Stack overflow\n");
         goto error;
     }
 
     printk("KGuard OK: Entry: Stored address 0x%px\n", (void*) addr);
-    *((unsigned long*) t->kguard_stack) = addr;
-    t->kguard_stack += sizeof(unsigned long);
-    t->kguard_stack_sz -= sizeof(unsigned long); 
+    t->kguard_stack[t->kguard_stack_sz++] = addr;
 
     return 0;
 
@@ -44,18 +38,12 @@ SYSCALL_DEFINE1(kguard_exit, unsigned long, addr)
         printk("KGuard ERROR: Return: Null stack\n");
         goto error;
     }
-    if (t->kguard_stack_sz == 4096) {
+    if (t->kguard_stack_sz == 0) {
         printk("KGuard ERROR: Return: Empty stack\n");
         goto error;
     }
-    if (t->kguard_stack_sz % sizeof(unsigned long)) {
-        printk("KGuard ERROR: Return: Misaligned stack\n");
-        goto error;
-    }
 
-    t->kguard_stack -= sizeof(unsigned long);
-    t->kguard_stack_sz += sizeof(unsigned long);
-    stored_addr = *((unsigned long*) t->kguard_stack);
+    stored_addr = t->kguard_stack[--t->kguard_stack_sz];
     if (stored_addr != addr) {
         printk("KGuard ERROR: Return: Address mismatch: "
                "KGuard remembers 0x%px, user popped 0x%px\n",

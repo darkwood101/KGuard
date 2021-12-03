@@ -605,7 +605,7 @@ struct task_struct {
 	 * scheduling-critical items should be added above here.
 	 */
 	randomized_struct_fields_start
-    char*               kguard_stack;
+    unsigned long       *kguard_stack;
     unsigned long       kguard_stack_sz;
 
 	void				*stack;
