@@ -70,3 +70,31 @@ intended. That is, uncanonical stack modifications are supported by KGuard.
 Moreover, KGuard ensures that control flow cannot be hijacked via
 `setjmp`/`longjmp`.
 
+Running:
+```console
+$ ./daemon setjmp_example
+```
+
+### `test_fork`
+
+This test makes sure that the child of a KGuarded process properly inherits the
+shadow stack. A forked process will continue to execute from the same point
+where the fork is called, so the shadow stack should be duplicated from the parent.
+Note that this applies not only to the `fork` system call, but also to the entire
+fork family (`clone`, `vfork`).
+
+Running:
+```console
+$ ./daemon test_fork
+```
+
+### `test_thread`
+
+This test ensures that a newly created `pthread` will inherit the shadow stack
+properly.
+
+Running:
+```console
+$ ./daemon test_thread
+```
+
