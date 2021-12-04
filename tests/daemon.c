@@ -49,15 +49,6 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    // Explain why the child is done
-    if (WIFEXITED(wstatus)) {
-        fprintf(stdout, "Child exited with status %d\n", WEXITSTATUS(wstatus));
-    } else if (WIFSIGNALED(wstatus)) {
-        fprintf(stdout, "Child terminated by signal %d\n", WTERMSIG(wstatus));
-    } else {
-        fprintf(stdout, "Child terminated for unknown reasons\n");
-    }
-
     free(stack_bottom);
     return EXIT_SUCCESS;
 }

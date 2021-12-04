@@ -47,7 +47,7 @@ test_thread:
 	gcc $(KGUARD_INSTR) -o test_thread -pthread test_thread.c
 
 clean:
-	rm -f overflow overflow-protect test1 test2 test3 test4 test5 \
+	rm -f daemon overflow overflow-protect test1 test2 test3 test4 test5 \
 		  example \
 		  setjmp_example \
 		  test_fork \

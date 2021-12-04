@@ -2097,10 +2097,6 @@ long _do_fork(unsigned long clone_flags,
         p->kguard_stack = kmalloc(1024 * sizeof(*p->kguard_stack), GFP_KERNEL);
         p->kguard_jbuf = kmalloc(16 * sizeof(*p->kguard_jbuf), GFP_KERNEL);
         if (p->kguard_stack && p->kguard_jbuf) {
-            printk("KGuard OK: Allocated a stack at address %p\n",
-                    p->kguard_stack);
-            printk("KGuard OK: Allocated setjmp/longjmp buffers at address %p\n",
-                    p->kguard_jbuf);
             p->kguard_stack_sz = 0;
             p->kguard_num_bufs = 0;
             if (current->kguard_stack) {
