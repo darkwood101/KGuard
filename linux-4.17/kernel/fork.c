@@ -2103,6 +2103,12 @@ long _do_fork(unsigned long clone_flags,
                     p->kguard_jbuf);
             p->kguard_stack_sz = 0;
             p->kguard_num_bufs = 0;
+            if (current->kguard_stack) {
+                memcpy(p->kguard_stack,
+                       current->kguard_stack,
+                       current->kguard_stack_sz * sizeof(*p->kguard_stack));
+                p->kguard_stack_sz = current->kguard_stack_sz;
+            }
         } else {
             printk("KGuard ERROR: Failed to allocate metadata\n");
             kfree(p->kguard_stack);
