@@ -48,11 +48,6 @@ SYSCALL_DEFINE1(kguard_setjmp, void*, env)
     buf->stack_entry = t->kguard_stack_sz;
     buf->buf_addr = (unsigned long) env;
 
-    printk("KGuard OK: setjmp: Remember to reset shadow stack to address 0x%px"
-           "with jmp_buf at addres 0x%px\n",
-           (t->kguard_stack_sz == 0) ? NULL : (void*) t->kguard_stack[t->kguard_stack_sz - 1],
-           env);
-
     return 0;
 
 error:
@@ -102,11 +97,6 @@ SYSCALL_DEFINE1(kguard_longjmp, void*, env)
 
     t->kguard_stack_sz = buf->stack_entry;
 
-    printk("KGuard OK: longjmp: Reset shadow stack to address 0x%px"
-           "with jmp_buf at addres 0x%px\n",
-           (t->kguard_stack_sz == 0) ? NULL : (void*) t->kguard_stack[t->kguard_stack_sz - 1],
-           env);
-
     return 0;
 
 error:
@@ -127,7 +117,6 @@ SYSCALL_DEFINE1(kguard_entry, unsigned long, addr)
         goto error;
     }
 
-    printk("KGuard OK: Entry: Stored address 0x%px\n", (void*) addr);
     t->kguard_stack[t->kguard_stack_sz++] = addr;
 
     return 0;
@@ -158,7 +147,6 @@ SYSCALL_DEFINE1(kguard_exit, unsigned long, addr)
                (void*) stored_addr, (void*)  addr);
         goto error;
     }
-    printk("KGuard OK: Return: Popped address 0x%px\n", (void*) addr);
 
     return 0;
 
