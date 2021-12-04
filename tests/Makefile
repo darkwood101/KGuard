@@ -6,7 +6,8 @@ KGUARD_INSTR = -finstrument-functions \
 
 all: overflow overflow-protect daemon test1 test2 test3 test4 test5 \
 	 example \
-	 setjmp_example
+	 setjmp_example \
+	 test_fork
 
 overflow: overflow.c
 	gcc -z execstack -fno-stack-protector -o overflow overflow.c
@@ -38,8 +39,12 @@ example:
 setjmp_example:
 	gcc $(KGUARD_INSTR) -o setjmp_example setjmp_example.c
 
+test_fork:
+	gcc $(KGUARD_INSTR) -o test_fork test_fork.c
+
 clean:
 	rm -f overflow overflow-protect test1 test2 test3 test4 test5 \
 		  example \
-		  setjmp_example
+		  setjmp_example \
+		  test_fork
 

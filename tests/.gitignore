@@ -8,4 +8,5 @@ overflow
 overflow-protect
 example
 setjmp_example
+test_fork
 
