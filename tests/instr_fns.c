@@ -9,13 +9,11 @@
 #define KGUARD_LONGJMP  336
 
 void __cyg_profile_func_enter(void *this_fn, void *call_site) {
-    uintptr_t* ret_addr_ptr = (uintptr_t*) call_site;
-    syscall(KGUARD_ENTRY, *ret_addr_ptr);
+    syscall(KGUARD_ENTRY, call_site);
 }
 
 void __cyg_profile_func_exit(void *this_fn, void *call_site) {
-    uintptr_t* ret_addr_ptr = (uintptr_t*) call_site;
-    syscall(KGUARD_EXIT, *ret_addr_ptr);
+    syscall(KGUARD_EXIT, call_site);
 }
 
 int setjmp_safe(jmp_buf buf) {
