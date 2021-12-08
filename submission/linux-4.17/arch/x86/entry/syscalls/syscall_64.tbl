@@ -1,0 +1,30 @@
+
+# ...
+
+326	common	copy_file_range		__x64_sys_copy_file_range
+327	64	preadv2			__x64_sys_preadv2
+328	64	pwritev2		__x64_sys_pwritev2
+329	common	pkey_mprotect		__x64_sys_pkey_mprotect
+330	common	pkey_alloc		__x64_sys_pkey_alloc
+331	common	pkey_free		__x64_sys_pkey_free
+332	common	statx			__x64_sys_statx
+
+333 64  kguard_entry        __x64_sys_kguard_entry
+334 64  kguard_exit         __x64_sys_kguard_exit  
+335 64  kguard_setjmp       __x64_sys_kguard_setjmp
+336 64  kguard_longjmp      __x64_sys_kguard_longjmp
+
+#
+# x32-specific system call numbers start at 512 to avoid cache impact
+# for native 64-bit operation. The __x32_compat_sys stubs are created
+# on-the-fly for compat_sys_*() compatibility system calls if X86_X32
+# is defined.
+#
+512	x32	rt_sigaction		__x32_compat_sys_rt_sigaction
+513	x32	rt_sigreturn		sys32_x32_rt_sigreturn
+514	x32	ioctl			__x32_compat_sys_ioctl
+515	x32	readv			__x32_compat_sys_readv
+
+
+# ...
+
