@@ -7,17 +7,33 @@ KGUARD_INSTR = -finstrument-functions \
 			   -finstrument-functions-exclude-file-list=$(INSTR_FNS_PATH) \
 			   $(INSTR_FNS_PATH)
 
-all: overflow overflow-protect daemon test1 test2 test3 test4 test5 \
+all: overflow overflow-protect daemon test1 test2 test3 test4 test5\
 	 example \
 	 setjmp_example \
 	 test_fork \
-	 test_thread
+	 test_thread\
+	 computation\
+	 io\
+	 scale\
+	network
 
 overflow: overflow.c
 	gcc -z execstack -fno-stack-protector -o overflow overflow.c
 
 overflow-protect: overflow.c
 	gcc $(KGUARD_INSTR) -z execstack -fno-stack-protector -o overflow-protect overflow.c
+
+computation: 
+	gcc $(KGUARD_INSTR) -o computation computation.c
+
+io:
+	gcc $(KGUARD_INSTR) -o io io.c
+
+scale:
+	gcc $(KGUARD_INSTR) -o scale scale.c
+
+network:
+	gcc $(KGUARD_INSTR) -o network network.c
 
 daemon:
 	gcc -o daemon -std=c99 -O2 daemon.c
@@ -50,9 +66,13 @@ test_thread:
 	gcc $(KGUARD_INSTR) -o test_thread -pthread test_thread.c
 
 clean:
-	rm -f daemon overflow overflow-protect test1 test2 test3 test4 test5 \
+	rm -f daemon overflow overflow-protect test1 test2 test3 test4 test5\
 		  example \
 		  setjmp_example \
 		  test_fork \
-		  test_thread
+		  test_thread\
+		  computation\
+		  io\
+		  scale\
+		 network
 

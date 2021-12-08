@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <time.h>
 
 // Stack size for the child process, this is the default
 #define STACK_SZ        0x800000
@@ -31,6 +32,7 @@ int main(int argc, char** argv) {
     }
 
     // Clone the child and let it run
+    clock_t start = clock();
     pid_t pid = clone(&run_child, stack_bottom + STACK_SZ,
                       CLONE_KGUARD, argv + 1);
     if (pid < 0) {
@@ -48,7 +50,7 @@ int main(int argc, char** argv) {
         free(stack_bottom);
         return EXIT_FAILURE;
     }
-
+    fprintf(stderr, "Total time %f\n", ((double) (clock() - start)) / CLOCKS_PER_SEC);
     // Explain why the child is done
     if (WIFEXITED(wstatus)) {
         fprintf(stdout, "Child exited with status %d\n", WEXITSTATUS(wstatus));
