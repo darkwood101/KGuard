@@ -10,4 +10,8 @@ example
 setjmp_example
 test_fork
 test_thread
+io
+network
+scale
+computation
 
